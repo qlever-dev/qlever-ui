@@ -214,7 +214,7 @@ function formatInteger(number) {
 // wdt:P17|@en@rdfs:label . Also take into account that prefixes may occur in
 // literal type IRIs, following ^^
 function doesQueryFragmentContainPrefix(query_fragment, prefix) {
-  return query_fragment.match(RegExp("(^|[\\s{;/|]|[\'\"]\\^\\^)\\^?(@[a-z]+@)?" + prefix + ":"));
+  return query_fragment.match(RegExp("(^|[\\s{;/|(]|[\'\"]\\^\\^)\\^?(@[a-z]+@)?" + prefix + ":"));
 }
 
 // Split SPARQL query into the following parts and return as dictionary with
