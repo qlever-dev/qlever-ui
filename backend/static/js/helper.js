@@ -72,7 +72,7 @@ async function fetchQleverBackend(params, additionalHeaders = {}) {
     case 503:
       throw new Error("503 Service Unavailable. The most common cause is that the QLever server is down. Please try again later and contact us if the error perists");
     case 504:
-      throw new Error("504 Gatway Timeout. The most common cause is that the query timed out. Please try again later and contact us if the error perists");
+      throw new Error("504 Gateway Timeout. The most common cause is that the query timed out. Please try again later and contact us if the error perists");
   }
   let text;
   try {
