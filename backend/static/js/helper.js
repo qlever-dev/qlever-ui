@@ -64,15 +64,15 @@ async function fetchQleverBackend(params, additionalHeaders = {}) {
       },
     });
   } catch (error) {
-    throw new Error(`Cannot reach ${BASEURL}. The most common cause is that the QLever server is down. Please try again later and contact us if the error persists`);
+    throw new Error(`Cannot reach ${BASEURL}. The most common cause is that the QLever server is down. Please try again later and contact us if the error persists.`);
   }
   switch(response.status) {
     case 502:
-      throw new Error("502 Bad Gateway. The most common cause is a problem with the web server. Please try again later and contact us if the error perists");
+      throw new Error("502 Bad Gateway. The most common cause is a problem with the web server. Please try again later and contact us if the error persists.");
     case 503:
-      throw new Error("503 Service Unavailable. The most common cause is that the QLever server is down. Please try again later and contact us if the error perists");
+      throw new Error("503 Service Unavailable. The most common cause is that the QLever server is down. Please try again later and contact us if the error persists.");
     case 504:
-      throw new Error("504 Gateway Timeout. The most common cause is that the query timed out. Please try again later and contact us if the error perists");
+      throw new Error("504 Gateway Timeout. The most common cause is that the query timed out. Please try again later and contact us if the error persists.");
   }
   let text;
   try {
