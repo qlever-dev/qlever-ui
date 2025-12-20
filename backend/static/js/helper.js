@@ -155,17 +155,24 @@ function addTextElementsToQueryExecutionTreeForTreant(tree_node, is_ancestor_cac
     //
     text["name"] = tree_node["description"]
     .replace(/<[^>]*[#\/\.]([^>]*)>/g, "<$1>")
-    .replace(/qlc_/g, "").replace(/_qlever_internal_variable_query_planner/g, "")
+    .replace(/qlc_/g, "")
     .replace(/\?[A-Z_]*/g, function (match) { return match.toLowerCase(); })
     .replace(/([a-z])([A-Z])/g, "$1-$2")
     .replace(/^([a-zA-Z-])*/, function (match) { return match.toUpperCase(); })
     .replace(/([A-Z])-([A-Z])/g, "$1 $2")
-    .replace(/AVAILABLE /, "").replace(/a all/, "all");
+    .replace(/AVAILABLE /, "").replace(/a all/, "all")
+    .replace(/_qlever_internal_variable_query_planner/g, "")
+    .replace(/_qlever_internal_variable/g, "")
+    .replace(/internal_property_path_variable/g, "_pp")
+    .replace(/^VALUES.*/, "VALUES");
     // console.log("-> REWRITTEN TO:", text["name"])
 
     text["cols"] = tree_node["column_names"].join(", ")
-    .replace(/qlc_/g, "").replace(/_qlever_internal_variable_query_planner/g, "")
-    .replace(/\?[A-Z_]*/g, function (match) { return match.toLowerCase(); });
+    .replace(/qlc_/g, "")
+    .replace(/\?[A-Z_]*/g, function (match) { return match.toLowerCase(); })
+    .replace(/_qlever_internal_variable_query_planner/g, "")
+    .replace(/_qlever_internal_variable/g, "")
+    .replace(/internal_property_path_variable/g, "_pp");
     text["size"] = formatInteger(tree_node["result_rows"]) + " x " + formatInteger(tree_node["result_cols"])
     text["size-estimate"] = "[~ " + formatInteger(tree_node["estimated_size"]) + "]";
     text["cache-status"] = is_ancestor_cached
