@@ -11,8 +11,6 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 import os
-import subprocess
-import re
 import environ
 
 try:
@@ -193,27 +191,10 @@ WHITENOISE_SKIP_COMPRESS_EXTENSIONS = (
 )
 
 try:
-    # Get git info from files in .git
-    with open(".git/HEAD", "r") as headFile:
-        GIT_HEAD = headFile.read().strip()
-    with open(".git/{}".format(GIT_HEAD.split(" ")[-1]), "r") as hashFile:
-        GIT_HASH = hashFile.read()[:7]
-    STATIC_VERSION = "Git commit {} on {}".format(
-        GIT_HASH, GIT_HEAD.split("/")[-1]
-    )
-except Exception as e:
-    print(e)
+    from importlib.metadata import version, PackageNotFoundError
+    STATIC_VERSION = "Version: {}".format(version("QLever-UI"))
+except PackageNotFoundError:
     pass
-
-if not STATIC_VERSION:
-    # get svn version info if git was not successful
-    try:
-        versionInfo = (
-            subprocess.check_output("svn info -r HEAD;", shell=True)
-        ).decode("utf-8")
-        STATIC_VERSION = re.search(r"(Revision: \d+)", versionInfo).group(1)
-    except:
-        pass
 
 IMPORT_EXPORT_USE_TRANSACTIONS = True
 
