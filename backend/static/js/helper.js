@@ -974,21 +974,24 @@ function getFormattedResultEntry(str, maxLength, column = undefined) {
   // it's terribly inefficient.
   if (pos > 0) {
     cpy = cpy.replace(/ /g, '_');
-    link = cpy.substring(pos).match(/(https?:\/\/[a-zA-Z0-9.:%/#\?_-]+)/g)[0];
-    columnHTML = $($('#resTable').find('th')[column + 1]);
-    content = '<a href="' + link + '" target="_blank"><i class="glyphicon glyphicon-list-alt" data-toggle="tooltip" title="' + link + '"></i></a> ';
-    if (columnHTML.html().indexOf(content) < 0) {
-      columnHTML.html(content + columnHTML.html());
-    }
-    // If the type is int or integer or if the type is decimal yet the number is
-    // an integer, display the number with thousand separators and mark it as
-    // right-aligned.
-    const typeIsInteger = link.endsWith("int") || link.endsWith("integer");
-    const typeIsDecimalButNumberIsInteger = link.endsWith("decimal") && str.match(/^\d+$/);
-    if (typeIsInteger || typeIsDecimalButNumberIsInteger) {
-      if (!var_name.endsWith("year")) {
-        str = formatInteger(str);
-        rightAlign = true;
+    const linkMatch = cpy.substring(pos).match(/(https?:\/\/[a-zA-Z0-9.:%/#\?_-]+)/g);
+    if (linkMatch) {
+      const link = linkMatch[0];
+      const columnHTML = $($('#resTable').find('th')[column + 1]);
+      const content = '<a href="' + link + '" target="_blank"><i class="glyphicon glyphicon-list-alt" data-toggle="tooltip" title="' + link + '"></i></a> ';
+      if (columnHTML.html().indexOf(content) < 0) {
+        columnHTML.html(content + columnHTML.html());
+      }
+      // If the type is int or integer or if the type is decimal yet the number is
+      // an integer, display the number with thousand separators and mark it as
+      // right-aligned.
+      const typeIsInteger = link.endsWith("int") || link.endsWith("integer");
+      const typeIsDecimalButNumberIsInteger = link.endsWith("decimal") && str.match(/^\d+$/);
+      if (typeIsInteger || typeIsDecimalButNumberIsInteger) {
+        if (!var_name.endsWith("year")) {
+          str = formatInteger(str);
+          rightAlign = true;
+        }
       }
     }
 
