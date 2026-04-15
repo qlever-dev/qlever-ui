@@ -7,7 +7,7 @@ name = "QLever-UI"
 version = "0.1.0"
 description = "A user-friendly interface for the QLever SPARQL engine"
 readme = "README.md"
-requires-python = ">=3.12"
+requires-python = ">=3.10"
 dependencies = [
     "django==5.2.12",
     "django-environ==0.13.0",
