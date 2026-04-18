@@ -191,10 +191,27 @@ WHITENOISE_SKIP_COMPRESS_EXTENSIONS = (
 )
 
 try:
-    from importlib.metadata import version, PackageNotFoundError
-    STATIC_VERSION = "Version: {}".format(version("QLever-UI"))
-except PackageNotFoundError:
+    # Get git info from files in .git
+    with open(".git/HEAD", "r") as headFile:
+        GIT_HEAD = headFile.read().strip()
+    with open(".git/{}".format(GIT_HEAD.split(" ")[-1]), "r") as hashFile:
+        GIT_HASH = hashFile.read()[:7]
+    STATIC_VERSION = "Git commit {} on {}".format(
+        GIT_HASH, GIT_HEAD.split("/")[-1]
+    )
+except OSError:
+    # Git Info not available
     pass
+except Exception:
+    # Should not happen
+    print("Error determining git version.")
+
+if not STATIC_VERSION:
+    from importlib.metadata import version, PackageNotFoundError
+    try:
+        STATIC_VERSION = "Version: {}".format(version("QLever-UI"))
+    except PackageNotFoundError:
+        pass
 
 IMPORT_EXPORT_USE_TRANSACTIONS = True
 
