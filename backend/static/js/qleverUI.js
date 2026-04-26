@@ -629,9 +629,7 @@ async function processQuery(sendLimit=0, element=$("#exebtn")) {
 
     switch (operationType) {
       case "Update":
-        if (!Array.isArray(result)) {
-          result = [result];
-        }
+        result = result.operations;
         // Collect warnings from all updates and display the unique ones.
         const uniqueWarnings = [...new Set(result.map(result => result["warnings"]).flat())];
         displayWarningsIfPresent(uniqueWarnings);
@@ -1010,8 +1008,8 @@ function renderRuntimeInformationToDom(entry = undefined) {
                           .parent().addClass("cached-pinned").addClass("cached");
   $("p.node-cache-status").filter(function () { return $(this).html() === "ancestor_cached" })
                           .parent().addClass("ancestor-cached").addClass("cached");
-  $("p.node-status").filter(function() { return $(this).text() === "fully materialized"}).addClass("fully-materialized");
-  $("p.node-status").filter(function() { return $(this).text() === "lazily materialized"}).addClass("lazily-materialized");
+  $("p.node-status").filter(function() { return $(this).text().startsWith("fully materialized")}).addClass("fully-materialized");
+  $("p.node-status").filter(function() { return $(this).text().startsWith("lazily materialized")}).addClass("lazily-materialized");
   $("p.node-status").filter(function() { return $(this).text() === "failed"}).addClass("failed");
   $("p.node-status").filter(function() { return $(this).text() === "failed because child failed"}).addClass("child-failed");
   $("p.node-status").filter(function() { return $(this).text() === "not yet started"}).parent().addClass("not-started");
