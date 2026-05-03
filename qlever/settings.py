@@ -11,8 +11,6 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 import os
-import subprocess
-import re
 import environ
 
 try:
@@ -201,18 +199,18 @@ try:
     STATIC_VERSION = "Git commit {} on {}".format(
         GIT_HASH, GIT_HEAD.split("/")[-1]
     )
-except Exception as e:
-    print(e)
+except OSError:
+    # Git Info not available
     pass
+except Exception:
+    # Should not happen
+    print("Error determining git version.")
 
 if not STATIC_VERSION:
-    # get svn version info if git was not successful
+    from importlib.metadata import version, PackageNotFoundError
     try:
-        versionInfo = (
-            subprocess.check_output("svn info -r HEAD;", shell=True)
-        ).decode("utf-8")
-        STATIC_VERSION = re.search(r"(Revision: \d+)", versionInfo).group(1)
-    except:
+        STATIC_VERSION = "Version: {}".format(version("QLever-UI"))
+    except PackageNotFoundError:
         pass
 
 IMPORT_EXPORT_USE_TRANSACTIONS = True
