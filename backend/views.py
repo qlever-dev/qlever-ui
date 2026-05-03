@@ -85,7 +85,7 @@ def index(request, backend=None, short=None):
         request.session["backend"] = activeBackend.pk
 
         # Get examples ordered by `sortKey`.
-        examples = Example.objects.filter(backend=activeBackend).order_by(
+        examples = Example.objects.filter(backend__in=[activeBackend, BackendDefaults.objects.get()]).order_by(
             "sortKey"
         )
 
